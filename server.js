@@ -28,7 +28,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'https://smart-brain-client.netlify.app/'
+    origin: 'https://smart-brain-client.netlify.app'
 }));
  
 // Endpoints
