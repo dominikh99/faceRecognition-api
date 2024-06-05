@@ -5,13 +5,6 @@ const cors = require('cors');
 const knex = require('knex');
 require('dotenv').config();
 
-const corsOptions = {
-    origin: 'https://smart-brain-client.netlify.app', 
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204
-  };
-
 // Controllers 
 const signin = require('./controllers/signin');
 const register = require('./controllers/register');
@@ -34,7 +27,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors(corsOptions));
+app.use(cors());
  
 // Endpoints
 app.get('/', (req, res) => { res.send('Server is working.') })
