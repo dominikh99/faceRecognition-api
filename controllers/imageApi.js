@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // Initiating facial recognition API
 // Your PAT (Personal Access Token) can be found in the Account's Security section
 const PAT = process.env.PAT;
