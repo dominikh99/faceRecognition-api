@@ -30,7 +30,10 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: 'https://smart-brain-client.netlify.app'
+}));
+app.options('*', cors());
  
 // Endpoints
 app.get('/', (req, res) => { res.send('Server is working.') })
