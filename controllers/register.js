@@ -22,6 +22,7 @@ const handleRegister = (req, res, db, bcrypt) => {
                 joined: new Date()
             })
             .then(user => {
+                res.setHeader('Access-Control-Allow-Origin', 'https://smart-brain-client.netlify.app');
                 res.json(user[0]);
             })
         })
