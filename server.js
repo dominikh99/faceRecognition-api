@@ -22,7 +22,7 @@ const db = knex({
         user: process.env.DB_USER,
         database: process.env.DB_DATABASE,
         password: process.env.DB_PASSWORD,
-        ssl: { rejectUnauthorized: false }
+        ssl: true
     }
 })
 
@@ -30,10 +30,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors({
-    origin: 'https://smart-brain-client.netlify.app'
-}));
-app.options('*', cors());
+app.use(cors())
  
 // Endpoints
 app.get('/', (req, res) => { res.send('Server is working.') })
