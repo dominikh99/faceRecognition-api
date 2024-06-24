@@ -30,7 +30,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors())
+app.use(cors());
  
 // Endpoints
 app.get('/', (req, res) => { res.send('Server is working.') })

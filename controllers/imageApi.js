@@ -1,3 +1,6 @@
+const { ClarifaiStub, grpc } = require("clarifai-nodejs-grpc");
+const stub = ClarifaiStub.grpc();
+
 // Initiating facial recognition API
 // Your PAT (Personal Access Token) can be found in the Account's Security section
 const PAT = process.env.PAT;
@@ -11,36 +14,43 @@ const handleImageApi = (req, res) => {
     const { imageUrl } = req.body;
     const IMAGE_URL = imageUrl;
 
-    const raw = JSON.stringify({
-        "user_app_id": {
-            "user_id": USER_ID,
-            "app_id": APP_ID
-        },
-        "inputs": [
-            {
-                "data": {
-                    "image": {
-                        "url": IMAGE_URL
-                        // "base64": IMAGE_BYTES_STRING
+    // This will be used by every Clarifai endpoint call
+    const metadata = new grpc.Metadata();
+    metadata.set("authorization", "Key " + PAT);
+
+    // To use a local text file, uncomment the following lines
+    // const fs = require("fs");
+    // const imageBytes = fs.readFileSync(IMAGE_FILE_LOCATION);
+
+    stub.PostModelOutputs(
+        {
+            user_app_id: {
+                "user_id": USER_ID,
+                "app_id": APP_ID
+            },
+            model_id: MODEL_ID,
+            inputs: [
+                {
+                    data: {
+                        image: {
+                            url: IMAGE_URL,
+                            // base64: imageBytes,
+                            allow_duplicate_url: true
+                        }
                     }
                 }
-            }
-        ]
-    });
-    
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Key ' + PAT
+            ]
         },
-        body: raw
-    };
-    
+        metadata,
+        (err, response) => {
+            if (err) {
+                res.status(400).json('Unable to work with API.');
+            }
 
-    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs/", requestOptions)
-        .then(response => res.json(response))
-        .catch(err => res.status(400).json('Unable to work with API'));
+            res.json(response);
+        }
+
+    );
 }
 
 module.exports = {
